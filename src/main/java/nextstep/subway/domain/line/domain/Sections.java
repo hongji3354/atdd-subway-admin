@@ -123,7 +123,7 @@ public class Sections {
     public void remove(final Section section) {
         final Station deleteStationInSection = section.getStation();
 
-        if (sectionCountLessTwo()) {
+        if (hasStationLessThanTwo()) {
             throw new SectionDeleteImpossibleException();
         }
 
@@ -141,6 +141,10 @@ public class Sections {
 
         endStationDelete(deleteStationInSection);
 
+    }
+
+    private boolean hasStationLessThanTwo() {
+        return this.sections.size() <= 2;
     }
 
     private void endStationDelete(final Station station) {
@@ -189,9 +193,5 @@ public class Sections {
 
     private boolean isUpStationDelete(final Station station, final Section sectionStart) {
         return sectionStart.getStation().equals(station);
-    }
-
-    private boolean sectionCountLessTwo() {
-        return this.sections.size() <= 2;
     }
 }
