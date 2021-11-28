@@ -64,6 +64,14 @@ public class Section extends BaseEntity {
         this.preStation = station;
     }
 
+    public boolean existByPreStation() {
+        return this.getPreStation() != null;
+    }
+
+    public boolean notExistByPreStation() {
+        return !existByPreStation();
+    }
+
     public void changeStation(Station station) {
         this.station = station;
     }

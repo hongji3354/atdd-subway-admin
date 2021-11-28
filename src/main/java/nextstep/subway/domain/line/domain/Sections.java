@@ -107,14 +107,14 @@ public class Sections {
 
     private Section getSectionStart() {
         return this.sections.stream()
-                .filter(st -> st.getPreStation() == null)
+                .filter(Section::notExistByPreStation)
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("상행 종점역이 존재하지 않습니다."));
     }
 
     private Section getSectionEnd(Section sectionStart) {
         return this.sections.stream()
-                .filter(st -> st.getPreStation() != null)
+                .filter(Section::existByPreStation)
                 .filter(st -> st.getPreStation().equals(sectionStart.getStation()))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("하행 종점역이 존재하지 않습니다."));
@@ -165,7 +165,7 @@ public class Sections {
 
     private void upStationDelete(final Section sectionStart) {
         final Section nextStation = this.sections.stream()
-                .filter(st -> st.getPreStation() != null)
+                .filter(Section::existByPreStation)
                 .filter(st -> st.getPreStation().equals(sectionStart.getStation()))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("상행 종점 다음역이 존재하지 않습니다."));
@@ -177,14 +177,14 @@ public class Sections {
 
     private boolean isMiddleStationDelete(final Station station, final Section sectionStart) {
         return this.sections.stream()
-                .filter(st -> st.getPreStation() != null)
+                .filter(Section::existByPreStation)
                 .filter(st -> st.getPreStation().equals(sectionStart.getStation()))
                 .anyMatch(st -> st.getStation().equals(station));
     }
 
     private Section getSectionMiddle(final Station station, final Section sectionStart) {
         return this.sections.stream()
-                .filter(st -> st.getPreStation() != null)
+                .filter(Section::existByPreStation)
                 .filter(st -> st.getPreStation().equals(sectionStart.getStation()))
                 .filter(st -> st.getStation().equals(station))
                 .findFirst()
@@ -194,4 +194,6 @@ public class Sections {
     private boolean isUpStationDelete(final Station station, final Section sectionStart) {
         return sectionStart.getStation().equals(station);
     }
+
+
 }
